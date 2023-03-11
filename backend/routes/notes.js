@@ -1,11 +1,11 @@
 const express = require('express');
+const Notes = require('../models/Notes');
 const router = express.Router();
 
-router.get('/', (req, res) => {
-    const obj = {
-        a: 'thios',
-        number: 34
-    }
-    res.send(obj);
+router.post('/', (req, res) => {
+
+    const notes = Notes(req.body);
+    notes.save();
+    res.send("hello");
 });
 module.exports = router;

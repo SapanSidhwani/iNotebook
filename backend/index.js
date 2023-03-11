@@ -6,9 +6,11 @@ const app = express();
 
 connectToMongo();
 const PORT = 3000;
+app.use(express.json())
 
+// Available routes
 app.use('/api/auth', require('./routes/auth'));
-// app.use('/api/notes', require('./routes/notes'));
+app.use('/api/notes', require('./routes/notes'));
 
 
 app.listen(PORT, () => {
