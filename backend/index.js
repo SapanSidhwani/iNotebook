@@ -1,5 +1,5 @@
 // npm init
-// npm i mongoose express
+// npm i mongoose express express-validator
 const connectToMongo = require('./db');
 const express = require('express');
 const app = express();
