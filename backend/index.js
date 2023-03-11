@@ -1,5 +1,6 @@
 // npm init
 // npm i mongoose express express-validator
+// npm i bcryptjs jsonwebtoken dotenv (v-49)
 const connectToMongo = require('./db');
 const express = require('express');
 const app = express();
