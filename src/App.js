@@ -7,12 +7,15 @@ import {
 import Navbar from './components/Navbar';
 import Home from './components/Home';
 import About from './components/About';
+import NoteState from './context/notes/NoteState';
 
 function RootLayout() {
   return (
     <>
+      {/* <noteState> */}
       <Navbar />
       <Outlet />
+      {/* </noteState> */}
     </>
   );
 }
@@ -34,10 +37,12 @@ function App() {
         }
       ]
     }
-  ])
+  ]);
   return (
     <>
-      <RouterProvider router={router} />
+      <NoteState>
+        <RouterProvider router={router} />
+      </NoteState>
     </>
   );
 }
