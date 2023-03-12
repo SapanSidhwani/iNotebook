@@ -1,38 +1,44 @@
 const express = require('express');
-const Notes = require('../models/Notes');
+const Note = require('../models/Note');
+const fetchuser = require('../middleware/fetchuser');
 const router = express.Router();
-const { body, validationResult } = require('express-validator')
+const { body, validationResult } = require('express-validator');
 
-router.post('/', [
-    body('title'),
-    body('description'),
-    body('tag')
-], (req, res) => {
+// Route 1 : Get all notes using : GET "api/notes/getuser". Login required
+router.get('/fetchallnotes', fetchuser, async (req,res) => {
+    try {
+        const notes = await Note.find({user: req.user.id});
+        res.json(notes);
 
-    const errors = validationResult(req.body);
-    if(!errors.isEmpty()){
-        return res.status(400).json({errors: errors.array()});
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).send('Internal server error');
+    }
+});
+
+// ROUTE 2  : ADD a note using : POST "api/notes/addnote". Login required
+router.post('/addnote', fetchuser, [
+    body('title', 'Enter a valid title').isLength({min: 5}),
+    body('description', 'Description must be atleast 5 characters').isLength({min: 5}),
+    body('tag', 'Enter a valid tag')
+], async (req, res) => {
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
     }
 
-    Notes.create({
-        title: req.body.title,
-        description: req.body.description,
-        tag: req.body.tag
-    })
-    .then(note => res.json(note))
-    .catch((err) => {
-
-        console.log(err);
-        let errMessage;
-        if(!req.body.title)
-            errMessage = "Title is Empty";
-        if (!req.body.description)
-            errMessage = "Description is Empty";
-
-        res.json({
-            "error": errMessage,
-            "message": err.message
-        })
-    })
+    try {
+        const {title, description, tag} = req.body;
+        const note = new Note({
+            title, description, tag, user: req.user.id
+        });
+        const savedNote = await note.save();
+        res.send(savedNote);
+        
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).send('Internal server error');
+    }
 });
 module.exports = router;
