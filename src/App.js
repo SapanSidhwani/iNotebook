@@ -12,10 +12,10 @@ import NoteState from './context/notes/NoteState';
 function RootLayout() {
   return (
     <>
-      {/* <noteState> */}
       <Navbar />
-      <Outlet />
-      {/* </noteState> */}
+      <div className="container">
+        <Outlet />
+      </div>
     </>
   );
 }
