@@ -8,14 +8,17 @@ import Navbar from './components/Navbar';
 import Home from './components/Home';
 import About from './components/About';
 import NoteState from './context/notes/NoteState';
+import Alert from './components/Alert';
 
 function RootLayout() {
   return (
     <>
       <Navbar />
+      <Alert message="This is amazing react course"/>
       <div className="container">
         <Outlet />
       </div>
+
     </>
   );
 }
@@ -29,11 +32,11 @@ function App() {
       children: [
         {
           path: '/',
-          element: <Home />
+          element: <Home key="home" />
         },
         {
           path: "/about",
-          element: <About />
+          element: <About key="about" />
         }
       ]
     }
