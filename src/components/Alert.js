@@ -1,12 +1,17 @@
 import React from 'react'
 
-const Alert = (props) => {
+function Alert(props) {
+  const wordCapitalize = (word) => {
+    if (word === "danger" || word === "warning"){
+      word = "error";
+    }
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  };
   return (
-        <div className = "container" style = {{ minHeight: '65px' }}>
-        <div className="alert alert-primary alert-dismissible fade show" role="alert">
-            {props.message}
-            <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
+    <div className="container" style={{ height: '60px' }}>
+      {props.alert && <div className={`alert alert-${props.alert.type} alert-dismissible fade show`} role="alert">
+        <strong>{wordCapitalize(props.alert.type)}</strong> : {props.alert.message}
+      </div>}
     </div>
   )
 }

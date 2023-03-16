@@ -11,30 +11,42 @@ import NoteState from './context/notes/NoteState';
 import Alert from './components/Alert';
 import Login from './components/Login';
 import SignUp from './components/SignUp';
+import { useState } from 'react';
 
-function RootLayout() {
+function RootLayout(props) {
   return (
     <>
       <Navbar />
-      <Alert message="This is amazing react course"/>
+      <Alert alert={props.alert}/>
       <div className="container">
-        <Outlet />
+      <Outlet />
       </div>
 
     </>
   );
 }
 function App() {
+  const [alert, setAlert] = useState(null);
+  const showAlert = (msg, typ) => {
+    setAlert({
+      message: msg,
+      type: typ
+    });
+    setTimeout(() => {
+      setAlert(null);
+    }, 6000);
+  };
+
 
   const router = createBrowserRouter([
 
     {
       path: "/",
-      element: <RootLayout />,
+      element: <RootLayout alert={alert} />,
       children: [
         {
           path: '/',
-          element: <Home key="home" />
+          element: <Home key="home" showAlert={showAlert} />
         },
         {
           path: "/about",
@@ -42,11 +54,11 @@ function App() {
         },
         {
           path: "/login",
-          element: <Login/>
+          element: <Login showAlert={showAlert} />
         },
         {
           path: "/signup",
-          element: <SignUp/>
+          element: <SignUp showAlert={showAlert} />
         }
       ]
     }
