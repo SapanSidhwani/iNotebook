@@ -1,5 +1,6 @@
 // rafc
 import React, { useContext, useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import NoteContext from '../context/notes/NoteContext';
 import AddNote from './AddNote';
 import NoteItem from './NoteItem';
@@ -12,9 +13,15 @@ const Notes = (props) => {
     const { notes, getNotes, editNote } = context;
     const ref = useRef(null);
     const refClose = useRef(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        getNotes()
+        if(localStorage.getItem('token')){
+            getNotes();
+        }
+        else{
+            navigate('/login')
+        }
         // eslint-disable-next-line
     }, [])
     const updateNote = (currentNote) => {
@@ -39,7 +46,7 @@ const Notes = (props) => {
         setNote({ ...note, [e.target.name]: e.target.value })
     }
     return (
-        <div className="container"> 
+        <> 
             <AddNote showAlert={showAlert} />
             <button type="button" className="visually-hidden btn btn-primary" ref={ref} data-bs-toggle="modal" data-bs-target="#exampleModal">
                 Launch demo modal
@@ -76,15 +83,15 @@ const Notes = (props) => {
                 </div>
             </div>
             <div className="row my-3 g-2">
-                <h2>You Notes</h2>
-                <div className="ms-1">
+                <div className="text-center">
+                    <h2>Your Notes</h2>
                     {notes.length === 0 && 'No notes to display'}
                 </div>
                 {notes.map((note) => {
                     return (<NoteItem key={note._id} updateNote={updateNote} showAlert={showAlert} note={note} />);
                 })}
             </div>
-        </div>
+        </>
     );
 }
 
