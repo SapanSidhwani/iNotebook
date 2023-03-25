@@ -4,7 +4,7 @@ mongoose.set('strictQuery', false);
 
 const connectToMongo = () => {
 
-    mongoose.connect("mongodb://127.0.0.1:27017/inotes", (err) => {
+    mongoose.connect("mongodb+srv://admin-sapan:Z6diUAFVizX2FT8@cluster0.vzoukul.mongodb.net/inotes", (err) => {
         if (err)
             console.log(`Unable to connect to the server : ${err}`);
         else
